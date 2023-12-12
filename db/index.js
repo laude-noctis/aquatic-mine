@@ -6,4 +6,4 @@ const allRoles = () => {
     'SELECT * FROM roles'
 }
 
-module.exports = allDepartments
+module.exports = allDepartments;
