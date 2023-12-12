@@ -162,18 +162,56 @@ function startPrompt() {
                             });
                           });
                         });
-                        break;
-                case 'addEmployee':
-                    const addEmployee = ''
-                    connection.query(addEmployee, (error, results) => {
-                        if (error) {
+                    break;
+                    case 'addEmployee':
+                        const getAllRoles = 'SELECT * FROM roles';
+                        connection.query(getAllRoles, (error, results) => {
+                          if (error) {
                             console.error('Error executing query:', error);
                             return;
-                        }
-                        console.table(results);
-                        startPrompt();
-                    })
-                    break;
+                          }
+
+                          const roleChoices = results.map((role) => ({
+                            name: role.title,
+                            value: role.id,
+                          }));
+
+                          inquirer
+                            .prompt([
+                              {
+                                type: 'input',
+                                name: 'firstName',
+                                message: `What is the employee's first name?`
+                              },
+                              {
+                                type: 'input',
+                                name: 'lastName',
+                                message: `What is the employee's last name?`
+                              },
+                              {
+                                type: 'list',
+                                name: 'newRole',
+                                message: `What is the employee's role?`,
+                                choices: roleChoices,
+                              },
+                            ])
+                            .then((answers) => {
+                              const firstName = answers.firstName;
+                              const lastName = answers.lastName;
+                              const newRole = answers.newRole;
+
+                              const addEmployee = 'INSERT INTO employees (first_name, last_name, roles_id) VALUES (?, ?, ?)';
+                              connection.query(addEmployee, [firstName, lastName, newRole], (error, results) => {
+                                if (error) {
+                                  console.error('Error executing query:', error);
+                                  return;
+                                }
+                                console.table(results);
+                                startPrompt();
+                              });
+                            });
+                        });
+                        break;
                 case 'updateEmployee':
                     const updateEmployee = ''
                     connection.query(updateEmployee, (error, results) => {
