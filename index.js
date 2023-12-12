@@ -1,6 +1,5 @@
-const {prompt} = require('inquirer');
+const inquirer = require('inquirer');
 const mysql = require('mysql2');
-const { allDepartments } = require('./db/index.js');
 require('dotenv').config();
 
 const connection = mysql.createConnection({
@@ -20,7 +19,7 @@ connection.connect((error) => {
 });
 
 function startPrompt() {
-        prompt([
+        inquirer.prompt([
             {
                 type: 'list',
                 name: 'name',
@@ -29,9 +28,6 @@ function startPrompt() {
                     {
                         name: 'view all departments',
                         value: 'allDepartments',
-                        action: () => {
-                            allDepartments();
-                        }
                     },
                     {
                         name: 'view all roles',
@@ -62,5 +58,41 @@ function startPrompt() {
                         value: 'quit',
                     }],
             },
-        ])
+        ]).then((answers) => {
+            switch (answers.name) {
+                case 'allDepartments':
+                    const allDepartments = 'SELECT * FROM departments ORDER BY name ASC'
+                    connection.query(allDepartments, (error, results) => {
+                        if (error) {
+                            console.error('Error executing query:', error);
+                            return;
+                        }
+                        console.log(results);
+                    });
+                    break;
+                case 'allRoles':
+                    allRoles();
+                    break;
+                case 'allEmployees':
+                    allEmployees();
+                    break;
+                case 'addDepartment':
+                    addDepartment();
+                    break;
+                case 'addRole':
+                    addRole();
+                    break;
+                case 'addEmployee':
+                    addEmployee();
+                    break;
+                case 'updateEmployee':
+                    updateEmployee();
+                    break;
+                case 'quit':
+                    console.log('exiting the application...')
+                    break;
+                default:
+                    console.log('please select an option')
+            }
+        })
 }
