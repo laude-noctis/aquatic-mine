@@ -9,11 +9,16 @@ CREATE TABLE departments (
 );
 
 CREATE TABLE roles (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(30),
-    salary DECIMAL,
-    department_id INT,
-    FOREIGN KEY (department_id) REFERENCES departments(id)
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(30),
+  salary DECIMAL,
+  department_id INT,
+  department_name VARCHAR(30) DEFAULT (
+    SELECT name
+    FROM departments
+    WHERE id = department_id
+  ),
+  FOREIGN KEY (department_id) REFERENCES departments(id)
 );
 
 CREATE TABLE employees (
