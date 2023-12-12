@@ -1,6 +1,6 @@
 const {prompt} = require('inquirer');
 const mysql = require('mysql2');
-const db = require("./db");
+const db = require('./db/index.js');
 require('dotenv').config();
 
 const connection = mysql.createConnection({
@@ -29,6 +29,9 @@ function startPrompt() {
                     {
                         name: 'view all departments',
                         value: 'allDepartments',
+                        action: () => {
+                            db.alldepartments();
+                        }
                     },
                     {
                         name: 'view all roles',
