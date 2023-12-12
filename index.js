@@ -72,7 +72,7 @@ function startPrompt() {
                     });
                     break;
                 case 'allRoles':
-                    const allRoles = 'SELECT * FROM roles ORDER BY department ASC'
+                    const allRoles = 'SELECT * FROM roles ORDER BY department_id ASC'
                     connection.query(allRoles, (error, results) => {
                         if (error) {
                             console.error('Error executing query:', error);
@@ -111,22 +111,58 @@ function startPrompt() {
                                     console.error('Error executing query:', error);
                                     return;
                                 }
-                        console.table(results);
-                        startPrompt();
-                    })
-                });
+                                startPrompt();
+                            })
+                        });
                     break;
-                case 'addRole':
-                    const addRole = ''
-                    connection.query(addRole, (error, results) => {
-                        if (error) {
+                    case 'addRole':
+                        const getAllDepartments = 'SELECT * FROM departments';
+                        connection.query(getAllDepartments, (error, results) => {
+                          if (error) {
                             console.error('Error executing query:', error);
                             return;
-                        }
-                        console.table(results);
-                        startPrompt();
-                    })
-                    break;
+                          }
+                      
+                          const departmentChoices = results.map((department) => ({
+                            name: department.name,
+                            value: department.id,
+                          }));
+                      
+                          inquirer.prompt([
+                            {
+                              type: 'input',
+                              name: 'titleRole',
+                              message: 'What is the new role?'
+                            },
+                            {
+                              type: 'input',
+                              name: 'salaryRole',
+                              message: 'What is the salary for the role?'
+                            },
+                            {
+                              type: 'list',
+                              name: 'departmentRole',
+                              message: 'What department does the role belong to?',
+                              choices: departmentChoices,
+                            },
+                          ]).then((answers) => {
+                            const titleRole = answers.titleRole;
+                            const salaryRole = answers.salaryRole;
+                            const departmentId = answers.departmentRole;
+                      
+                            const addRole = 'INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)';
+                            connection.query(addRole, [titleRole, salaryRole, departmentId], (error, results) => {
+                              if (error) {
+                                console.error('Error executing query:', error);
+                                return;
+                              }
+                      
+                              console.table(results);
+                              startPrompt();
+                            });
+                          });
+                        });
+                        break;
                 case 'addEmployee':
                     const addEmployee = ''
                     connection.query(addEmployee, (error, results) => {
