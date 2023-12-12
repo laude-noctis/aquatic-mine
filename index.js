@@ -213,15 +213,58 @@ function startPrompt() {
                         });
                         break;
                 case 'updateEmployee':
-                    const updateEmployee = ''
-                    connection.query(updateEmployee, (error, results) => {
+                    const getAllEmployees = 'SELECT * FROM emplooyes';
+                    connection.query(getAllEmployees, (error, results) => {
                         if (error) {
                             console.error('Error executing query:', error);
                             return;
                         }
-                        console.table(results);
-                        startPrompt();
+
+                        const employeeChoices = results.map((employee) => ({
+                            name: employee.first_name + employee.last_name,
+                            value: employee.id,
+                        }))
                     })
+
+                    const AllRoles = 'SELECT * FROM roles';
+                    connection.query(AllRoles, (error, results) => {
+                      if (error) {
+                        console.error('Error executing query:', error);
+                        return;
+                      }
+
+                      const roleChoices = results.map((role) => ({
+                        name: role.title,
+                        value: role.id,
+                      })); 
+                    inquirer
+                        .prompt([
+                            {
+                                type: 'list',
+                                name: 'updateEmployee',
+                                message: 'Which employee would you like to update?',
+                                choices: employeeChoices,
+                            },
+                            {
+                                type: 'list',
+                                name: 'updateRole',
+                                message: 'Which role do you want to assign the selected employee?',
+                                choices: roleChoices,
+                            }
+                        ]).then((answers) => {
+                            const employeeChoice = answers.updateEmployee;
+                            const roleChoice = answers.updateRole;
+
+                            const updateEmployee = 'INSERT INTO employees'
+                            connection.query(updateEmployee, (error, results) => {
+                                if (error) {
+                                    console.error('Error executing query:', error);
+                                    return;
+                                }
+                                console.table(results);
+                                startPrompt();
+                            })
+                        })
                     break;
                 case 'quit':
                     console.log('exiting the application...')
