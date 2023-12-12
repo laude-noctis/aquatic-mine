@@ -67,29 +67,80 @@ function startPrompt() {
                             console.error('Error executing query:', error);
                             return;
                         }
-                        console.log(results);
+                        console.table(results);
+                        startPrompt();
                     });
                     break;
                 case 'allRoles':
-                    allRoles();
+                    const allRoles = 'SELECT * FROM roles ORDER BY department ASC'
+                    connection.query(allRoles, (error, results) => {
+                        if (error) {
+                            console.error('Error executing query:', error);
+                            return;
+                        }
+                        console.table(results);
+                        startPrompt();
+                    })
                     break;
                 case 'allEmployees':
-                    allEmployees();
+                    const allEmployees = 'SELECT * FROM employees ORDER BY last_name ASC'
+                    connection.query(allEmployees, (error, results) => {
+                        if (error) {
+                            console.error('Error executing query:', error);
+                            return;
+                        }
+                        console.table(results);
+                        startPrompt();
+                    })
                     break;
                 case 'addDepartment':
-                    addDepartment();
+                    const addDepartment = 'SELECT * FROM employees ORDER BY last_name ASC'
+                    connection.query(addDepartment, (error, results) => {
+                        if (error) {
+                            console.error('Error executing query:', error);
+                            return;
+                        }
+                        console.table(results);
+                        startPrompt();
+                    })
                     break;
                 case 'addRole':
-                    addRole();
+                    const addRole = 'SELECT * FROM employees ORDER BY last_name ASC'
+                    connection.query(addRole, (error, results) => {
+                        if (error) {
+                            console.error('Error executing query:', error);
+                            return;
+                        }
+                        console.table(results);
+                        startPrompt();
+                    })
                     break;
                 case 'addEmployee':
-                    addEmployee();
+                    const addEmployee = 'SELECT * FROM employees ORDER BY last_name ASC'
+                    connection.query(addEmployee, (error, results) => {
+                        if (error) {
+                            console.error('Error executing query:', error);
+                            return;
+                        }
+                        console.table(results);
+                        startPrompt();
+                    })
                     break;
                 case 'updateEmployee':
-                    updateEmployee();
+                    const updateEmployee = 'SELECT * FROM employees ORDER BY last_name ASC'
+                    connection.query(updateEmployee, (error, results) => {
+                        if (error) {
+                            console.error('Error executing query:', error);
+                            return;
+                        }
+                        console.table(results);
+                        startPrompt();
+                    })
                     break;
                 case 'quit':
                     console.log('exiting the application...')
+                    connection.end();
+                    process.exit();
                     break;
                 default:
                     console.log('please select an option')
