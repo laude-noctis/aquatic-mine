@@ -94,18 +94,30 @@ function startPrompt() {
                     })
                     break;
                 case 'addDepartment':
-                    const addDepartment = 'SELECT * FROM employees ORDER BY last_name ASC'
-                    connection.query(addDepartment, (error, results) => {
-                        if (error) {
-                            console.error('Error executing query:', error);
-                            return;
-                        }
+                    inquirer
+                        .prompt([
+                            {
+                                type: 'input',
+                                name: 'departmentName',
+                                message: 'Enter the department name:',
+                            },
+                        ])
+                        .then((answers) => {
+                            const departmentName = answers.departmentName;
+                            const addDepartment = 'INSERT INTO departments (name) VALUES (?)';
+
+                            connection.query(addDepartment, [departmentName], (error, results) => {
+                                if (error) {
+                                    console.error('Error executing query:', error);
+                                    return;
+                                }
                         console.table(results);
                         startPrompt();
                     })
+                });
                     break;
                 case 'addRole':
-                    const addRole = 'SELECT * FROM employees ORDER BY last_name ASC'
+                    const addRole = ''
                     connection.query(addRole, (error, results) => {
                         if (error) {
                             console.error('Error executing query:', error);
@@ -116,7 +128,7 @@ function startPrompt() {
                     })
                     break;
                 case 'addEmployee':
-                    const addEmployee = 'SELECT * FROM employees ORDER BY last_name ASC'
+                    const addEmployee = ''
                     connection.query(addEmployee, (error, results) => {
                         if (error) {
                             console.error('Error executing query:', error);
@@ -127,7 +139,7 @@ function startPrompt() {
                     })
                     break;
                 case 'updateEmployee':
-                    const updateEmployee = 'SELECT * FROM employees ORDER BY last_name ASC'
+                    const updateEmployee = ''
                     connection.query(updateEmployee, (error, results) => {
                         if (error) {
                             console.error('Error executing query:', error);
