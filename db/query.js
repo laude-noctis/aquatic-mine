@@ -1,3 +1,17 @@
+const inquirer = require('inquirer');
+const mysql = require('mysql2');
+require('dotenv').config();
+
+
+const connection = mysql.createConnection({
+    host: 'localhost',
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE
+});
+return connection;
+
+
 function allDepartments() {
     const allDepartments = 'SELECT * FROM departments ORDER BY name ASC'
     connection.query(allDepartments, (error, results) => {
@@ -213,7 +227,8 @@ function updateEmployee() {
     )
 };
 
-module.exports = allDepartments(),
+module.exports = connectToDatabase(),
+allDepartments(),
 allRoles(),
 allEmployees(),
 addDepartment(),

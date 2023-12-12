@@ -1,6 +1,6 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
-const { allDepartments, allEmployees, allRoles, addDepartment, addEmployee, addRole, updateEmployee } = require('./db/index.js')
+const { allDepartments, allEmployees, allRoles, addDepartment, addEmployee, addRole, updateEmployee } = require('./db/query.js')
 require('dotenv').config();
 
 const connection = mysql.createConnection({
