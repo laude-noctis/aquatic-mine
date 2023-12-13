@@ -9,8 +9,6 @@ const connection = mysql.createConnection({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE
 });
-return connection;
-
 
 function allDepartments() {
     const allDepartments = 'SELECT * FROM departments ORDER BY name ASC'
@@ -227,11 +225,11 @@ function updateEmployee() {
     )
 };
 
-module.exports = connectToDatabase(),
-allDepartments(),
-allRoles(),
-allEmployees(),
-addDepartment(),
-addEmployee(),
-addRole(),
-updateEmployee()
+module.exports =
+    allDepartments,
+    allRoles,
+    allEmployees,
+    addDepartment,
+    addEmployee,
+    addRole,
+    updateEmployee
