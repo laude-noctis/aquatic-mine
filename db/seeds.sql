@@ -1,7 +1,7 @@
 INSERT INTO departments (department)
 VALUES ('Sales'),
-       ('Finance'),
        ('Marketing'),
+       ('Finance'),
        ('IT'),
        ('Human Resources');
 
@@ -22,17 +22,17 @@ VALUES  ('Sales Manager', 80000.00, 1),
         ('HR Manager', 75000.00, 5);
 
 INSERT INTO employees (first_name, last_name, roles_id, manager_id)
-VALUES  ('Jill', 'Valentine', 1, NULL),
+VALUES  ('Jill', 'Valentine', 1, 2),
         ('Chris', 'Redfield', 2, NULL),
-        ('Leon', 'Kennedy', 3, NULL),
-        ('Claire', 'Redfield', 4, NULL),
+        ('Leon', 'Kennedy', 3, 2),
+        ('Claire', 'Redfield', 4, 5),
         ('Ada', 'Wong', 5, NULL),
-        ('Carlos', 'Oliveira', 6, NULL),
-        ('Ashley', 'Graham', 7, NULL),
+        ('Carlos', 'Oliveira', 6, 5),
+        ('Ashley', 'Graham', 7, 8),
         ('Rebecca', 'Chambers', 8, NULL),
-        ('Ethan', 'Winters', 9, NULL),
+        ('Ethan', 'Winters', 9, 8),
         ('Sherry', 'Birkin', 10, NULL),
-        ('Mia', 'Winters', 11, NULL),
-        ('Jack', 'Krauser', 12, NULL),
-        ('Donna', 'Beneviento', 13, NULL),
+        ('Mia', 'Winters', 11, 10),
+        ('Jack', 'Krauser', 12, 10),
+        ('Donna', 'Beneviento', 13, 14),
         ('Sheva', 'Alomar', 14, NULL);

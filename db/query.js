@@ -39,22 +39,25 @@ function allRoles(startPrompt) {
 };
 
 function allEmployees(startPrompt) {
-    const allEmployees = `
-    SELECT employees.id, employees.first_name, employees.last_name, roles.title, roles.salary, departments.department
-    FROM employees
-    JOIN roles ON employees.roles_id = roles.id
-    JOIN departments ON roles.department_id = departments.id
-    ORDER BY employees.last_name ASC;
+    const allEmployeesQuery = `
+      SELECT employees.id, employees.first_name, employees.last_name, roles.title, departments.department, roles.salary, 
+      CONCAT(manager.first_name, ' ', manager.last_name) AS manager
+      FROM employees
+      JOIN roles ON employees.roles_id = roles.id
+      JOIN departments ON roles.department_id = departments.id
+      LEFT JOIN employees AS manager ON employees.manager_id = manager.id
+      ORDER BY departments.department ASC;
     `;
-    connection.query(allEmployees, (error, results) => {
-        if (error) {
-            console.error('Error executing query:', error);
-            return;
-        }
-        console.table(results);
-        startPrompt();
-    })
-};
+  
+    connection.query(allEmployeesQuery, (error, results) => {
+      if (error) {
+        console.error('Error executing query:', error);
+        return;
+      }
+      console.table(results);
+      startPrompt();
+    });
+  }
 
 function addDepartment(startPrompt) {
     inquirer
@@ -133,47 +136,71 @@ function addEmployee(startPrompt) {
             console.error('Error executing query:', error);
             return;
         }
-
         const roleChoices = results.map((role) => ({
             name: role.title,
             value: role.id,
         }));
 
-        inquirer
-            .prompt([
-                {
-                    type: 'input',
-                    name: 'firstName',
-                    message: `What is the employee's first name?`
-                },
-                {
-                    type: 'input',
-                    name: 'lastName',
-                    message: `What is the employee's last name?`
-                },
-                {
-                    type: 'list',
-                    name: 'newRole',
-                    message: `What is the employee's role?`,
-                    choices: roleChoices,
-                },
-            ])
-            .then((answers) => {
-                const firstName = answers.firstName;
-                const lastName = answers.lastName;
-                const newRole = answers.newRole;
+        const getAllEmployees = 'SELECT * FROM employees';
+        connection.query(getAllEmployees, (error, results) => {
+            if (error) {
+                console.error('Error executing query:', error);
+                return;
+            }
+            const employeeChoices = [
+                { name: 'NULL', value: null },
+                ...results.map((employee) => ({
+                    name: employee.first_name + ' ' + employee.last_name,
+                    value: employee.id,
+                })),
+            ];
+            inquirer
+                .prompt([
+                    {
+                        type: 'input',
+                        name: 'firstName',
+                        message: `What is the employee's first name?`,
+                    },
+                    {
+                        type: 'input',
+                        name: 'lastName',
+                        message: `What is the employee's last name?`,
+                    },
+                    {
+                        type: 'list',
+                        name: 'newRole',
+                        message: `What is the employee's role?`,
+                        choices: roleChoices,
+                    },
+                    {
+                        type: 'list',
+                        name: 'manager',
+                        message: `Who is the employee's manager?`,
+                        choices: employeeChoices,
+                    },
+                ])
+                .then((answers) => {
+                    const firstName = answers.firstName;
+                    const lastName = answers.lastName;
+                    const newRole = answers.newRole;
+                    const managerId = answers.manager;
 
-                const addEmployee = 'INSERT INTO employees (first_name, last_name, roles_id) VALUES (?, ?, ?)';
-                connection.query(addEmployee, [firstName, lastName, newRole], (error, results) => {
-                    if (error) {
-                        console.error('Error executing query:', error);
-                        return;
-                    }
-                    startPrompt();
+                    const addEmployeeQuery =
+                        'INSERT INTO employees (first_name, last_name, roles_id, manager_id) VALUES (?, ?, ?, ?)';
+                    const params = [firstName, lastName, newRole, managerId];
+
+                    connection.query(addEmployeeQuery, params, (error, results) => {
+                        if (error) {
+                            console.error('Error executing query:', error);
+                            return;
+                        }
+                        console.log('New employee added successfully');
+                        startPrompt();
+                    });
                 });
-            });
+        });
     });
-};
+}
 
 function updateEmployee(startPrompt) {
     let employeeChoices;
