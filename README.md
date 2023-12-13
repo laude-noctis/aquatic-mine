@@ -5,7 +5,7 @@ This application is an employee tracker using mysql2 and inquirer. It has a user
 
 ## Usage
 To invoke the application, run `node index.js` in the command line  
-Then answer an option and follow the prompts  
+Then click on one of the options and follow the prompts  
 
 ## Features (npm)
 [inquirer](https://www.npmjs.com/package/inquirer/v/8.2.4) (v. 8.2.4)  
