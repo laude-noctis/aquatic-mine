@@ -92,6 +92,4 @@ function startPrompt() {
     })
 }
 
-module.exports = { 
-    startPrompt 
-}
+module.exports = {startPrompt} 

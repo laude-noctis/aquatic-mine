@@ -3,7 +3,6 @@ const mysql = require('mysql2');
 require('dotenv').config();
 const { startPrompt } = require('../index.js')
 
-
 const connection = mysql.createConnection({
     host: 'localhost',
     user: process.env.DB_USER,
@@ -31,7 +30,7 @@ function allRoles() {
             return;
         }
         console.table(results);
-        startPrompt();
+        // startPrompt();
     })
 };
 
@@ -43,7 +42,7 @@ function allEmployees() {
             return;
         }
         console.table(results);
-        startPrompt();
+        // startPrompt();
     })
 };
 
@@ -65,7 +64,7 @@ function addDepartment() {
                     console.error('Error executing query:', error);
                     return;
                 }
-                startPrompt();
+                // startPrompt();
             })
         });
 };
@@ -111,9 +110,7 @@ function addRole() {
                     console.error('Error executing query:', error);
                     return;
                 }
-
-                console.table(results);
-                startPrompt();
+                // startPrompt();
             });
         });
     });
@@ -162,8 +159,7 @@ function addEmployee() {
                         console.error('Error executing query:', error);
                         return;
                     }
-                    console.table(results);
-                    startPrompt();
+                    // startPrompt();
                 });
             });
     });
@@ -220,7 +216,7 @@ function updateEmployee() {
                         return;
                     }
                     console.table(results);
-                    startPrompt();
+                    // startPrompt();
                 })
             })
     )
