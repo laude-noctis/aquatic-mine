@@ -69,25 +69,25 @@ async function startPrompt() {
 
     switch (answers.name) {
         case 'allDepartments':
-            allDepartments();
+            allDepartments(startPrompt);
             break;
         case 'allEmployees':
-            allEmployees();
+            allEmployees(startPrompt);
             break;
         case 'allRoles':
-            allRoles();
+            allRoles(startPrompt);
             break;
         case 'addDepartment':
-            addDepartment();
+            addDepartment(startPrompt);
             break;
         case 'addEmployee':
-            addEmployee();
+            addEmployee(startPrompt);
             break;
         case 'addRole':
-            addRole();
+            addRole(startPrompt);
             break;
         case 'updateEmployee':
-            updateEmployee();
+            updateEmployee(startPrompt);
             break;
         case 'quit':
             console.log('exiting the application...')
@@ -96,5 +96,4 @@ async function startPrompt() {
           default:
             console.log('Please select an option');
         }
-        startPrompt();
 }

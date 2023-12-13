@@ -9,7 +9,7 @@ const connection = mysql.createConnection({
     database: process.env.DB_DATABASE
 });
 
-function allDepartments() {
+function allDepartments(startPrompt) {
     const allDepartments = 'SELECT * FROM departments ORDER BY name ASC'
     connection.query(allDepartments, (error, results) => {
         if (error) {
@@ -17,11 +17,11 @@ function allDepartments() {
             return;
         }
         console.table(results);
-        // startPrompt();
+        startPrompt();
     });
 };
 
-function allRoles() {
+function allRoles(startPrompt) {
     const allRoles = 'SELECT * FROM roles ORDER BY department_id ASC'
     connection.query(allRoles, (error, results) => {
         if (error) {
@@ -29,11 +29,11 @@ function allRoles() {
             return;
         }
         console.table(results);
-        // startPrompt();
+        startPrompt();
     })
 };
 
-function allEmployees() {
+function allEmployees(startPrompt) {
     const allEmployees = 'SELECT * FROM employees ORDER BY last_name ASC'
     connection.query(allEmployees, (error, results) => {
         if (error) {
@@ -41,11 +41,11 @@ function allEmployees() {
             return;
         }
         console.table(results);
-        // startPrompt();
+        startPrompt();
     })
 };
 
-function addDepartment() {
+function addDepartment(startPrompt) {
     inquirer
         .prompt([
             {
@@ -63,12 +63,12 @@ function addDepartment() {
                     console.error('Error executing query:', error);
                     return;
                 }
-                // startPrompt();
+                startPrompt();
             })
         });
 };
 
-function addRole() {
+function addRole(startPrompt) {
     const getAllDepartments = 'SELECT * FROM departments';
     connection.query(getAllDepartments, (error, results) => {
         if (error) {
@@ -109,13 +109,13 @@ function addRole() {
                     console.error('Error executing query:', error);
                     return;
                 }
-                // startPrompt();
+                startPrompt();
             });
         });
     });
 };
 
-function addEmployee() {
+function addEmployee(startPrompt) {
     const getAllRoles = 'SELECT * FROM roles';
     connection.query(getAllRoles, (error, results) => {
         if (error) {
@@ -158,13 +158,13 @@ function addEmployee() {
                         console.error('Error executing query:', error);
                         return;
                     }
-                    // startPrompt();
+                    startPrompt();
                 });
             });
     });
 };
 
-function updateEmployee() {
+function updateEmployee(startPrompt) {
     const getAllEmployees = 'SELECT * FROM emplooyes';
     connection.query(getAllEmployees, (error, results) => {
         if (error) {
@@ -215,7 +215,7 @@ function updateEmployee() {
                         return;
                     }
                     console.table(results);
-                    // startPrompt();
+                    startPrompt();
                 })
             })
     )
