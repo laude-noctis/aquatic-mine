@@ -42,8 +42,8 @@ function allEmployees(startPrompt) {
     const allEmployees = `
     SELECT employees.id, employees.first_name, employees.last_name, roles.title, roles.salary, departments.department
     FROM employees
-    INNER JOIN roles ON employees.roles_id = roles.id
-    INNER JOIN departments ON roles.department_id = departments.id
+    JOIN roles ON employees.roles_id = roles.id
+    JOIN departments ON roles.department_id = departments.id
     ORDER BY employees.last_name ASC;
     `;
     connection.query(allEmployees, (error, results) => {

@@ -21,18 +21,18 @@ VALUES  ('Sales Manager', 80000.00, 1),
         ('HR Coordinator', 60000.00, 5),
         ('HR Manager', 75000.00, 5);
 
-INSERT INTO employees (first_name, last_name)
-VALUES  ('Jill', 'Valentine'),
-        ('Chris', 'Redfield'),
-        ('Leon', 'Kennedy'),
-        ('Claire', 'Redfield'),
-        ('Ada', 'Wong'),
-        ('Carlos', 'Oliveira'),
-        ('Ashley', 'Graham'),
-        ('Rebecca', 'Chambers'),
-        ('Ethan', 'Winters'),
-        ('Sherry', 'Birkin'),
-        ('Mia', 'Winters'),
-        ('Jack', 'Krauser'),
-        ('Donna', 'Beneviento'),
-        ('Sheva', 'Alomar');
+INSERT INTO employees (first_name, last_name, roles_id, manager_id)
+VALUES  ('Jill', 'Valentine', 1, NULL),
+        ('Chris', 'Redfield', 2, NULL),
+        ('Leon', 'Kennedy', 3, NULL),
+        ('Claire', 'Redfield', 4, NULL),
+        ('Ada', 'Wong', 5, NULL),
+        ('Carlos', 'Oliveira', 6, NULL),
+        ('Ashley', 'Graham', 7, NULL),
+        ('Rebecca', 'Chambers', 8, NULL),
+        ('Ethan', 'Winters', 9, NULL),
+        ('Sherry', 'Birkin', 10, NULL),
+        ('Mia', 'Winters', 11, NULL),
+        ('Jack', 'Krauser', 12, NULL),
+        ('Donna', 'Beneviento', 13, NULL),
+        ('Sheva', 'Alomar', 14, NULL);
