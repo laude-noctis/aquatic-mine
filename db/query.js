@@ -1,6 +1,7 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
 require('dotenv').config();
+const { startPrompt } = require('../index.js')
 
 
 const connection = mysql.createConnection({
@@ -225,7 +226,7 @@ function updateEmployee() {
     )
 };
 
-module.exports =
+module.exports = {
     allDepartments,
     allRoles,
     allEmployees,
@@ -233,3 +234,4 @@ module.exports =
     addEmployee,
     addRole,
     updateEmployee
+}

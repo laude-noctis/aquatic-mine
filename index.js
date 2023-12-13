@@ -91,3 +91,7 @@ function startPrompt() {
         }
     })
 }
+
+module.exports = { 
+    startPrompt 
+}
