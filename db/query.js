@@ -57,7 +57,7 @@ function allEmployees(startPrompt) {
       console.table(results);
       startPrompt();
     });
-  }
+}
 
 function addDepartment(startPrompt) {
     inquirer
@@ -262,7 +262,7 @@ function updateEmployee(startPrompt) {
           });
       });
     });
-  }
+}
 
 module.exports = {
     allDepartments,
