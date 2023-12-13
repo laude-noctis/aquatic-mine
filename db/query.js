@@ -10,7 +10,7 @@ const connection = mysql.createConnection({
 });
 
 function allDepartments(startPrompt) {
-    const allDepartments = 'SELECT * FROM departments ORDER BY name ASC'
+    const allDepartments = 'SELECT * FROM departments ORDER BY department ASC'
     connection.query(allDepartments, (error, results) => {
         if (error) {
             console.error('Error executing query:', error);
@@ -22,19 +22,30 @@ function allDepartments(startPrompt) {
 };
 
 function allRoles(startPrompt) {
-    const allRoles = 'SELECT * FROM roles ORDER BY department_id ASC'
+    const allRoles = `
+      SELECT roles.id, roles.title, roles.salary, departments.department
+      FROM roles
+      JOIN departments ON roles.department_id = departments.id
+      ORDER BY roles.department_id ASC
+    `;
     connection.query(allRoles, (error, results) => {
-        if (error) {
-            console.error('Error executing query:', error);
-            return;
-        }
-        console.table(results);
-        startPrompt();
-    })
+      if (error) {
+        console.error('Error executing query:', error);
+        return;
+      }
+      console.table(results);
+      startPrompt();
+    });
 };
 
 function allEmployees(startPrompt) {
-    const allEmployees = 'SELECT * FROM employees ORDER BY last_name ASC'
+    const allEmployees = `
+    SELECT employees.id, employees.first_name, employees.last_name, roles.title, roles.salary, departments.department
+    FROM employees
+    INNER JOIN roles ON employees.roles_id = roles.id
+    INNER JOIN departments ON roles.department_id = departments.id
+    ORDER BY employees.last_name ASC;
+    `;
     connection.query(allEmployees, (error, results) => {
         if (error) {
             console.error('Error executing query:', error);
