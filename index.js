@@ -19,77 +19,82 @@ connection.connect((error) => {
     }
 });
 
-function startPrompt() {
-    inquirer.prompt([
-        {
-            type: 'list',
-            name: 'name',
-            message: 'Choose an option:',
-            choices: [
-                {
-                    name: 'view all departments',
-                    value: 'allDepartments',
-                },
-                {
-                    name: 'view all roles',
-                    value: 'allRoles',
-                },
-                {
-                    name: 'view all employees',
-                    value: 'allEmployees',
-                },
-                {
-                    name: 'add a department',
-                    value: 'addDepartment',
-                },
-                {
-                    name: 'add a role',
-                    value: 'addRole',
-                },
-                {
-                    name: 'add an employee',
-                    value: 'addEmployee',
-                },
-                {
-                    name: 'update an employee role',
-                    value: 'updateEmployee',
-                },
-                {
-                    name: 'exit',
-                    value: 'quit',
-                }],
-        },
-    ]).then((answers) => {
-        switch (answers.name) {
-            case 'allDepartments':
-                allDepartments();
-                break;
-            case 'allRoles':
-                allRoles();
-                break;
-            case 'allEmployees':
-                allEmployees();
-                break;
-            case 'addDepartment':
-                addDepartment();
-                break;
-            case 'addRole':
-                addRole();
-                break;
-            case 'addEmployee':
-                addEmployee();
-                break;
-            case 'updateEmployee':
-                updateEmployee();
-                break;
-            case 'quit':
-                console.log('exiting the application...')
-                connection.end();
-                process.exit();
-            default:
-                console.log('please select an option')
-        }
-    })
-}
 
-module.exports = {startPrompt} 
+async function startPrompt() {
+    const answers = await new Promise((resolve) => {
+        inquirer.prompt([
+            {
+                type: 'list',
+                name: 'name',
+                message: 'Choose an option:',
+                choices: [
+                    {
+                        name: 'view all departments',
+                        value: 'allDepartments',
+                    },
+                    {
+                        name: 'view all roles',
+                        value: 'allRoles',
+                    },
+                    {
+                        name: 'view all employees',
+                        value: 'allEmployees',
+                    },
+                    {
+                        name: 'add a department',
+                        value: 'addDepartment',
+                    },
+                    {
+                        name: 'add a role',
+                        value: 'addRole',
+                    },
+                    {
+                        name: 'add an employee',
+                        value: 'addEmployee',
+                    },
+                    {
+                        name: 'update an employee role',
+                        value: 'updateEmployee',
+                    },
+                    {
+                        name: 'exit',
+                        value: 'quit',
+                    }
+                ],
+            },
+        ]).then((answers) => {
+            resolve(answers);
+        });
+    })
+
+    switch (answers.name) {
+        case 'allDepartments':
+            allDepartments();
+            break;
+        case 'allEmployees':
+            allEmployees();
+            break;
+        case 'allRoles':
+            allRoles();
+            break;
+        case 'addDepartment':
+            addDepartment();
+            break;
+        case 'addEmployee':
+            addEmployee();
+            break;
+        case 'addRole':
+            addRole();
+            break;
+        case 'updateEmployee':
+            updateEmployee();
+            break;
+        case 'quit':
+            console.log('exiting the application...')
+            connection.end();
+            process.exit();
+          default:
+            console.log('Please select an option');
+        }
+        startPrompt();
+}
