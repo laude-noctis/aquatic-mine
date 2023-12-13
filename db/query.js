@@ -67,7 +67,7 @@ function addDepartment(startPrompt) {
         ])
         .then((answers) => {
             const departmentName = answers.departmentName;
-            const addDepartment = 'INSERT INTO departments (name) VALUES (?)';
+            const addDepartment = 'INSERT INTO departments (department) VALUES (?)';
 
             connection.query(addDepartment, [departmentName], (error, results) => {
                 if (error) {
@@ -88,7 +88,7 @@ function addRole(startPrompt) {
         }
 
         const departmentChoices = results.map((department) => ({
-            name: department.name,
+            name: department.department,
             value: department.id,
         }));
 
@@ -176,61 +176,66 @@ function addEmployee(startPrompt) {
 };
 
 function updateEmployee(startPrompt) {
-    const getAllEmployees = 'SELECT * FROM emplooyes';
-    connection.query(getAllEmployees, (error, results) => {
+    let employeeChoices;
+    let roleChoices;
+  
+    const getAllEmployees = 'SELECT * FROM employees';
+    const getAllRoles = 'SELECT * FROM roles';
+  
+    connection.query(getAllEmployees, (error, employeeResults) => {
+      if (error) {
+        console.error('Error executing query:', error);
+        return;
+      }
+      employeeChoices = employeeResults.map((employee) => ({
+        name: employee.first_name + ' ' + employee.last_name,
+        value: employee.id,
+      }));
+  
+      connection.query(getAllRoles, (error, roleResults) => {
         if (error) {
-            console.error('Error executing query:', error);
-            return;
+          console.error('Error executing query:', error);
+          return;
         }
-
-        const employeeChoices = results.map((employee) => ({
-            name: employee.first_name + employee.last_name,
-            value: employee.id,
-        }))
-    })
-
-    const AllRoles = 'SELECT * FROM roles';
-    connection.query(AllRoles, (error, results) => {
-        if (error) {
-            console.error('Error executing query:', error);
-            return;
-        }
-
-        const roleChoices = results.map((role) => ({
-            name: role.title,
-            value: role.id,
+        roleChoices = roleResults.map((role) => ({
+          name: role.title,
+          value: role.id,
         }));
-    },
+  
         inquirer
-            .prompt([
-                {
-                    type: 'list',
-                    name: 'updateEmployee',
-                    message: 'Which employee would you like to update?',
-                    choices: employeeChoices,
-                },
-                {
-                    type: 'list',
-                    name: 'updateRole',
-                    message: 'Which role do you want to assign the selected employee?',
-                    choices: roleChoices,
-                }
-            ]).then((answers) => {
-                const employeeChoice = answers.updateEmployee;
-                const roleChoice = answers.updateRole;
-
-                const updateEmployee = 'INSERT INTO employees'
-                connection.query(updateEmployee, (error, results) => {
-                    if (error) {
-                        console.error('Error executing query:', error);
-                        return;
-                    }
-                    console.table(results);
-                    startPrompt();
-                })
-            })
-    )
-};
+          .prompt([
+            {
+              type: 'list',
+              name: 'updateEmployee',
+              message: 'Which employee would you like to update?',
+              choices: employeeChoices,
+            },
+            {
+              type: 'list',
+              name: 'updateRole',
+              message: 'Which role do you want to assign the selected employee?',
+              choices: roleChoices,
+            },
+          ])
+          .then((answers) => {
+            const employeeChoice = answers.updateEmployee;
+            const roleChoice = answers.updateRole;
+  
+            const updateEmployeeQuery = 'UPDATE employees SET roles_id = ? WHERE id = ?';
+            const params = [roleChoice, employeeChoice];
+  
+            connection.query(updateEmployeeQuery, params, (error, results) => {
+              if (error) {
+                console.error('Error executing query:', error);
+                return;
+              }
+              console.log('Employee role updated successfully');
+              startPrompt();
+            });
+          });
+      });
+    });
+  }
 
 module.exports = {
     allDepartments,
